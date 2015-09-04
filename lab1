@@ -50,6 +50,8 @@ acf_seasonal_residuals<-acf(resi,main="Autocorrelation function of the residuals
 qqnorm(resi,main="Quantiles of the residuals of the seasonal model against Theoretical gaussian quantiles", xlab="theoretical Gaussian quantiles", ylab="seasonal model residual quantiles")
 qqline(resi)
 
+
+hist(resi)
 #The first model M1 is an AR(1) model with root x = 1/0.8 = 5/4. It is stationary.
 #The second model M2 is not stationary since phi2 - phi1 = 1
 #The third model is stationary with complex conjugate roots
@@ -97,5 +99,30 @@ AR2sim(100,.8,0)
 AR2sim(100,-.5,.5)
 AR2sim(100,0,-.64)
 
+silver_ts <- ts(silver$EURO,start=c(silver$Date[1]),freq=52)
+plot(silver_ts,main="Price of ounce silver in Euro",ylab="Euro",xlab="Years after 2005",col=10)
+# mean and variance is not constant
+logsilv <- log(silver_ts)
+difflogsilv <- diff(logsilv)
 
+plot(difflogsilv)
+# mean is constant, not variance
+acf(difflogsilv, lag.max = 250)
+qqnorm(difflogsilv)
+qqline(difflogsilv)
+hist(difflogsilv)
+boxcoxvaluessilver <- BoxCox.ar(silver_ts)
+#box suggests -,15 = lambda is best parameter value in that transform
 
+plot(diff(diff(logsilv)))
+
+data(robot)
+plot(robot)
+
+data(winnebago)
+plot(winnebago)
+logwinne <- log(winnebago)
+difflogwinne <- diff(logwinne)
+plot(difflogwinne)
+
+boxcoxvalueswinne <- BoxCox.ar(winnebago)
